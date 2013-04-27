@@ -1,0 +1,16 @@
+#!/bin/bash
+# Bashrc SSH-tmux wrapper | Spencer Tipping
+# Licensed under the terms of the MIT source code license
+
+# Source this just after the PS1-check to enable auto-tmuxing of your SSH
+# sessions. See https://github.com/spencertipping/bashrc-tmux for usage
+# information.
+
+if [[ -z "$TMUX" && -n "$SSH_CONNECTION" ]] && which tmux >& /dev/null; then
+  if ! tmux ls -F '#{session_name}' | grep "^ssh-$USER$" > /dev/null; then
+    tmux new-session -s ssh-$USER \; detach
+  fi
+
+  session_count=$(tmux ls -F '#{session_name}' | grep "^ssh-$USER-" | wc -l)
+  exec tmux new-session -s ssh-$USER-$((1 + session_count)) -t ssh-$USER
+fi
