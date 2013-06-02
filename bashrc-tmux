@@ -28,8 +28,8 @@ if [[ -z "$TMUX" && -n "$SSH_CONNECTION" ]] && which tmux >& /dev/null; then
   session_index=${#sessions[@]}
 
   for ((i = 1; i < ${#sessions[@]}; ++i)); do
-    if (( ${sessions[$i]} - ${sessions[$(($i - 1))]} > 1 )); then
-      session_index=$((${sessions[$i]} + 1))
+    if (( ${sessions[$i]} - ${sessions[$((i - 1))]} > 1 )); then
+      session_index=$((${sessions[$((i - 1))]} + 1))
       break
     fi
   done
