@@ -11,6 +11,8 @@ source path/to/bashrc-tmux
 # rest of bashrc below...
 ```
 
+**Note:** Also works with zsh.
+
 ## Behavior
 `bashrc-tmux` won't do anything for local shells. It kicks in when:
 
