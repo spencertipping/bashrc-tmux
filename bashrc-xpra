@@ -1,0 +1,11 @@
+#!/bin/bash
+# Bashrc SSH-xpra wrapper | Spencer Tipping
+# Licensed under the terms of the MIT source code license
+
+# Source this in your bashrc to automatically reroute non-X11 terminal sessions
+# into the same persistent xpra display.
+
+if [[ -z "$DISPLAY" && -x /usr/bin/xpra ]]; then
+  xpra start :100 >& /dev/null && echo 'Using xpra display'
+  export DISPLAY=:100.0
+fi

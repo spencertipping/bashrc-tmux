@@ -48,3 +48,12 @@ foo$ fg                 # reattach to job from last tmux
 ^C
 foo$ ^D                 # exit shell, killing all tmuxen and logging out
 ```
+
+## xpra extension
+`xpra` is to X11 what `tmux` is to ssh, and you can source `bashrc-xpra` to
+enable it in similar situations. You can then temporarily attach to the remote
+display by saying this:
+
+```sh
+$ xpra attach ssh:remote-system:100
+```
