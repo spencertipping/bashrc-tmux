@@ -15,13 +15,17 @@ if [[ -z "$TMUX" && -n "$SSH_CONNECTION" ]] && which tmux >& /dev/null; then
   # differences between bash and zsh, working with arrays to densely pack
   # session IDs is cumbersome.
 
-  tmux_sessions="$(tmux ls -F '${session_name}' | egrep "^ssh-$USER-")"
-  session_index=0
+  session_max=$(tmux ls -F '#{session_name}' \
+                | egrep "^ssh-$USER-[0-9]+$" \
+                | sed "s/^ssh-$USER-//" \
+                | sort -rn \
+                | head -n1)
+  session_index=$((${session_max:--1} + 1))
 
-  while [[ "${tmux_sessions/ssh-$USER-$session_index}" \
-           != "$tmux_sessions" ]]; do
-    (( ++session_index ))
+  # HACK: for some reason the logic above sometimes creates duplicate sessions.
+  # Rather than fixing the bug, I'm just retrying with new indexes until it
+  # works.
+  until exec tmux new-session -s ssh-$USER-$session_index -t ssh-$USER; do
+    session_index=$((session_index + 1))
   done
-
-  exec tmux new-session -s ssh-$USER-$session_index -t ssh-$USER
 fi
