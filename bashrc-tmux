@@ -22,5 +22,10 @@ if [[ -z "$TMUX" && -n "$SSH_CONNECTION" ]] && which tmux >& /dev/null; then
                 | head -n1)
   session_index=$((${session_max:--1} + 1))
 
-  exec tmux new-session -s ssh-$USER-$session_index -t ssh-$USER
+  # HACK: for some reason the logic above sometimes creates duplicate sessions.
+  # Rather than fixing the bug, I'm just retrying with new indexes until it
+  # works.
+  until exec tmux new-session -s ssh-$USER-$session_index -t ssh-$USER; do
+    session_index=$((session_index + 1))
+  done
 fi
