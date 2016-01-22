@@ -7,20 +7,20 @@
 # information.
 
 if [[ -z "$TMUX" && -n "$SSH_CONNECTION" ]] && which tmux >& /dev/null; then
-  if ! tmux ls -F '#{session_name}' | grep "^ssh-$USER$" > /dev/null; then
-    tmux new-session -s ssh-$USER \; detach
+  if ! tmux -2 ls -F '#{session_name}' | grep "^ssh-$USER$" > /dev/null; then
+    tmux -2 new-session -s ssh-$USER \; detach
   fi
 
   # Allocating a session ID: always just bump the counter. Because of
   # differences between bash and zsh, working with arrays to densely pack
   # session IDs is cumbersome.
 
-  session_max=$(tmux ls -F '#{session_name}' \
+  session_max=$(tmux -2 ls -F '#{session_name}' \
                 | egrep "^ssh-$USER-[0-9]+$" \
                 | sed "s/^ssh-$USER-//" \
                 | sort -rn \
                 | head -n1)
   session_index=$((${session_max:--1} + 1))
 
-  exec tmux new-session -s ssh-$USER-$session_index -t ssh-$USER
+  exec tmux new-session -2 -s ssh-$USER-$session_index -t ssh-$USER
 fi
