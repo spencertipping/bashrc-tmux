@@ -22,5 +22,5 @@ if [[ -z "$TMUX" && -n "$SSH_CONNECTION" ]] && which tmux >& /dev/null; then
                 | head -n1)
   session_index=$((${session_max:--1} + 1))
 
-  exec tmux new-session -2 -s ssh-$USER-$session_index -t ssh-$USER
+  exec tmux -2 new-session -s ssh-$USER-$session_index -t ssh-$USER
 fi
