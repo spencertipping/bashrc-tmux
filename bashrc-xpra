@@ -6,6 +6,8 @@
 # into the same persistent xpra display.
 
 if [[ -z "$DISPLAY" && -x /usr/bin/xpra ]]; then
-  xpra start :100 >& /dev/null && echo 'Using xpra display'
-  export DISPLAY=:100.0
+  XPRA_DISPLAY=${XPRA_DISPLAY:-:100}
+  xpra start $XPRA_DISPLAY ${XPRA_SERVER_OPTIONS:---sharing} >& /dev/null \
+    && echo "Using xpra display $XPRA_DISPLAY"
+  export DISPLAY=$XPRA_DISPLAY
 fi
