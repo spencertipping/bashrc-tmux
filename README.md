@@ -1,8 +1,9 @@
 # Auto-`tmux` for SSH logins
 A solution to the classic problem: you SSH somewhere, start something, and you
-forgot to run it inside `screen` or `tmux` and need to leave. This script
-solves that for you, re-attaching to your session if you later SSH in from
-someplace else. To use, make the top of your `.bashrc` look like this:
+forgot to run it inside `screen` or `tmux` and need to leave (**protip:**
+`reptyr` can save your day in a pinch). This script solves that for you,
+re-attaching to your session if you later SSH in from someplace else. To use,
+make the top of your `.bashrc` look like this:
 
 ```sh
 [ -z "$PS1" ] && return                 # this still comes first
