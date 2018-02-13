@@ -32,6 +32,9 @@ get rid of all sessions, you can just `^D` out of all shells in all windows,
 which will cause tmux to kill the `ssh-$USER` session and any open throwaways,
 forcing a logout.
 
+You can also create isolated sessions; see
+[below](#multiple-remote-tmux-sessions) for details.
+
 ## Example
 Note: this example assumes `^A` is the escape key, not tmux's default of `^B`.
 
@@ -48,6 +51,18 @@ foo$ jobs
 foo$ fg                 # reattach to job from last tmux
 ^C
 foo$ ^D                 # exit shell, killing all tmuxen and logging out
+```
+
+## Multiple remote tmux sessions
+Normally you'll share tabs with existing SSH connections if you log into a
+server; but you can specify a session suffix if you want to. This will create a
+new set of shared tabs for anyone logging into that session suffix:
+
+```sh
+$ ssh -t foo BASHRC_TMUX_SESSION=bar bash
+foo$ tmux ls
+ssh-spencertipping-bar: 1 windows ... (group 0)
+ssh-spencertipping-bar-1: 1 windows ... (group 0) (attached)
 ```
 
 ## xpra extension
