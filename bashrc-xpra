@@ -5,8 +5,10 @@
 # Source this in your bashrc to automatically reroute non-X11 terminal sessions
 # into the same persistent xpra display.
 
+UID_XPRA_DISPLAY=$(( 100 + UID % 1000 ))
+
 if [[ -z "$DISPLAY" && -n "$SSH_CONNECTION" && -x /usr/bin/xpra ]]; then
-  XPRA_DISPLAY=${XPRA_DISPLAY:-:100}
+  XPRA_DISPLAY=${XPRA_DISPLAY:-:$UID_XPRA_DISPLAY}
   xpra start $XPRA_DISPLAY ${XPRA_SERVER_OPTIONS:---sharing} >& /dev/null \
     && echo "Using xpra display $XPRA_DISPLAY"
   export DISPLAY=$XPRA_DISPLAY
